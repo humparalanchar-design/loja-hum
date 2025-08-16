@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Loja Hum</title>
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container row between center">
+      <h1 class="brand">🍰 Loja Hum</h1>
+      <nav class="nav">
+        <button class="tab-btn active" data-tab="home">Início</button>
+        <button class="tab-btn" data-tab="produtos">Produtos</button>
+        <button class="tab-btn" data-tab="estoque">Estoque</button>
+        <button class="tab-btn" data-tab="pedidos">Pedidos</button>
+        <button class="tab-btn" data-tab="clientes">Clientes</button>
+        <button class="tab-btn" data-tab="config">Configurações</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="tab-home" class="tab active">
+      <div class="hero">
+        <h2>Feito com Amor • Ingredientes Naturais • Entrega Rápida</h2>
+        <p class="sub">Sistema conectado ao Firebase com estoque mínimo, pedidos e WhatsApp configuráveis.</p>
+      </div>
+    </section>
+
+    <section id="tab-produtos" class="tab">
+      <h2>Cadastro de Produtos</h2>
+      <form id="formProduto" class="grid2 card">
+        <div>
+          <label>Nome do Produto *</label>
+          <input required name="nome" placeholder="Ex.: Bolo de Chocolate" />
+        </div>
+        <div>
+          <label>Preço (R$) *</label>
+          <input required name="preco" type="number" step="0.01" min="0" />
+        </div>
+
+        <div>
+          <label>Categoria *</label>
+          <select name="categoria" id="selectCategoria" required>
+            <option value="">Selecione uma categoria</option>
+            <option value="bolos">Bolos</option>
+            <option value="doces">Doces</option>
+            <option value="salgados">Salgados</option>
+            <option value="tortas">Tortas</option>
+            <option value="capcakes">Capcakes</option>
+            <option value="sobremesas">Sobremesas</option>
+          </select>
+        </div>
+        <div>
+          <label>Tipo de Produto</label>
+          <select name="tipo">
+            <option value="">Selecione o tipo</option>
+            <option value="pronta-entrega">Pronta Entrega</option>
+            <option value="encomenda">Encomenda</option>
+          </select>
+        </div>
+
+        <div class="full">
+          <label>Descrição</label>
+          <textarea name="descricao" rows="4" placeholder="Descrição do produto"></textarea>
+        </div>
+
+        <div class="full">
+          <label>Detalhes do Produto</label>
+          <textarea name="detalhes" rows="4" placeholder="Ingredientes, informações nutricionais, observações especiais..."></textarea>
+        </div>
+
+        <div>
+          <label>Estoque Inicial</label>
+          <input name="estoqueInicial" type="number" min="0" value="0" />
+        </div>
+        <div>
+          <label>Estoque Mínimo</label>
+          <input name="estoqueMinimo" type="number" min="1" value="3" />
+        </div>
+
+        <div class="full">
+          <button class="btn primary" type="submit">Salvar Produto</button>
+        </div>
+      </form>
+
+      <h3 class="mt">Lista de Produtos</h3>
+      <div id="listaProdutos" class="grid3"></div>
+    </section>
+
+    <section id="tab-estoque" class="tab">
+      <h2>Controle de Estoque</h2>
+      <div class="stats grid4">
+        <div class="stat green"><div class="kpi" id="kpiTotal">0</div><div>Total Produtos</div></div>
+        <div class="stat blue"><div class="kpi" id="kpiEmEstoque">0</div><div>Em Estoque</div></div>
+        <div class="stat yellow"><div class="kpi" id="kpiBaixo">0</div><div>Estoque Baixo</div></div>
+        <div class="stat red"><div class="kpi" id="kpiZerado">0</div><div>Sem Estoque</div></div>
+      </div>
+      <div id="tabelaEstoque" class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Produto</th><th>Categoria</th><th>Tipo</th><th>Atual</th><th>Mínimo</th><th>Status</th><th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tbodyEstoque"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="tab-pedidos" class="tab">
+      <h2>Pedidos</h2>
+      <form id="formPedido" class="grid2 card">
+        <div>
+          <label>Cliente (email) *</label>
+          <input name="clienteEmail" required placeholder="email do cliente" />
+        </div>
+        <div>
+          <label>Itens (JSON) *</label>
+          <input name="itens" required placeholder='[{"produtoId":"...", "qtd":1}]' />
+        </div>
+        <div class="full">
+          <button type="submit" class="btn">Criar Pedido</button>
+        </div>
+      </form>
+
+      <h3 class="mt">Pedidos Abertos</h3>
+      <div id="listaPedidos" class="grid2"></div>
+    </section>
+
+    <section id="tab-clientes" class="tab">
+      <h2>Cadastro de Clientes</h2>
+      <form id="formCliente" class="grid2 card">
+        <div><label>Nome Completo *</label><input name="nome" required /></div>
+        <div><label>Telefone *</label><input name="telefone" required /></div>
+        <div><label>Email *</label><input name="email" required type="email" /></div>
+        <div><label>CPF</label><input name="cpf" /></div>
+        <div class="full"><label>Data de Nascimento</label><input name="nascimento" type="date" /></div>
+        <div><label>CEP</label><input name="cep" /></div>
+        <div><label>Cidade</label><input name="cidade" /></div>
+        <div class="full"><label>Endereço</label><input name="endereco" /></div>
+        <div><label>Número</label><input name="numero" /></div>
+        <div><label>Complemento</label><input name="complemento" /></div>
+        <div><label>Bairro</label><input name="bairro" /></div>
+        <div class="full"><label>Observações</label><textarea name="obs" rows="3"></textarea></div>
+        <div class="full"><button class="btn primary" type="submit">Salvar Cliente</button></div>
+      </form>
+
+      <h3 class="mt">Clientes</h3>
+      <div id="listaClientes" class="grid2"></div>
+    </section>
+
+    <section id="tab-config" class="tab">
+      <h2>Configurações da Loja</h2>
+      <form id="formConfig" class="grid2 card">
+        <div class="full">
+          <label>Número do WhatsApp da Loja (com DDI, ex: 55DDDNUMERO)</label>
+          <input id="whatsNumber" placeholder="Ex.: 5599999999999" />
+        </div>
+        <div class="full">
+          <button class="btn" type="submit">Salvar Configuração</button>
+        </div>
+      </form>
+      <div class="note">Esse número será usado para avisos automáticos quando um pedido for aprovado.</div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">© Loja Hum — todos os direitos reservados</div>
+  </footer>
+
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>
